@@ -76,7 +76,8 @@ installVIVO(){
     rm -rf vivo
     mkdir vivo
     cd vivo
-    wget https://github.com/vivo-project/VIVO/releases/download/rel-1.10.0-RC-1/VIVO-rel-1.10.0-RC-1.tar.gz -O vivo.tar.gz
+    #wget https://github.com/vivo-project/VIVO/releases/download/rel-1.10.0-RC-1/VIVO-rel-1.10.0-RC-1.tar.gz -O vivo.tar.gz
+    wget https://github.com/vivo-project/VIVO/releases/download/vivo-1.10.0/VIVO-1.10.0.tar.gz -O vivo.tar.gz
     tar -xvf vivo.tar.gz
     #Copy runtime properties into data directory
     cp $PROVDIR/vivo/runtime.properties $DATADIR/.
