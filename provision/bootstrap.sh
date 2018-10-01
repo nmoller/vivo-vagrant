@@ -12,7 +12,7 @@ apt-get update -y
 
 #Set time zone
 area="America"
-zone="New_York"
+zone="Toronto"
 echo "$area/$zone" > /tmp/timezone
 cp -f /tmp/timezone /etc/timezone
 cp -f /usr/share/zoneinfo/$area/$zone /etc/localtime
@@ -60,9 +60,8 @@ installTomcat
 /var/lib/dpkg/info/ca-certificates-java.postinst configure
 
 # Make Karma scripts executable
-chmod +x /home/vagrant/provision/karma.sh
+chmod +x /opt/vivo/provision/karma.sh
 
 echo Box boostrapped.
 
 exit
-

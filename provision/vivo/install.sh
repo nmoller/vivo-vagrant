@@ -16,7 +16,7 @@ set -o verbose
 #
 #Data directory - Solr index and VIVO application files will be stored here.
 DATADIR=/usr/local/vdata
-PROVDIR=/home/vagrant/provision
+PROVDIR=/opt/vivo/provision
 #Tomcat webapp dir
 WEBAPPDIR=/var/lib/tomcat7/webapps
 
@@ -40,16 +40,12 @@ removeRDFFiles(){
 
 setLogAlias() {
     #Alias for viewing VIVO log
-    VLOG="alias vlog='less +F $DATADIR/logs/vivo.all.log'"
-    BASHRC=/home/vagrant/.bashrc
+    cat > /usr/local/bin/vlog <<- CONTENT
+#!/bin/bash
 
-    if grep "$VLOG" $BASHRC > /dev/null
-    then
-       echo "log alias exists"
-    else
-       (echo;  echo $VLOG)>> $BASHRC
-       echo "log alias created"
-    fi
+less +F ${DATADIR}"/logs/vivo.all.log"
+CONTENT
+    chmod +x /usr/local/bin/vlog
     return $TRUE
 }
 
@@ -60,7 +56,7 @@ setupTomcat(){
     dirs=( $DATADIR $WEBAPPDIR/vivo )
     for dir in "${dirs[@]}"
     do
-      chown -R vagrant:tomcat7 $dir
+      chown -R tomcat7:tomcat7 $dir
       chmod -R g+rws $dir
     done
 
@@ -72,7 +68,7 @@ setupTomcat(){
 }
 
 installVIVO(){
-    cd /home/vagrant/
+    cd /opt/vivo
     rm -rf vivo
     mkdir vivo
     cd vivo
@@ -87,21 +83,13 @@ installVIVO(){
     cp $PROVDIR/vivo/log4j.properties webapp/src/main/webResources/WEB-INF/classes/.
     cp $PROVDIR/vivo/settings.xml .
     mvn install -s settings.xml
-    chown -R vagrant:tomcat7 ../
+    chown -R tomcat7:tomcat7 ../
     return $TRUE
 }
 
 
 #Stop tomcat
 /etc/init.d/tomcat7 stop
-
-# add vagrant to tomcat7 group
-if ! id "vagrant" >/dev/null 2>&1; then
-  echo "Creating 'vagrant' user"
-  adduser --disabled-password --gecos "" vagrant
-fi
-
-usermod -a -G tomcat7 vagrant
 
 # install the app
 installVIVO
@@ -113,7 +101,7 @@ setupTomcat
 setLogAlias
 
 #Start Tomcat
-/etc/init.d/tomcat7 start
+#/etc/init.d/tomcat7 start
 
 echo VIVO installed.
 

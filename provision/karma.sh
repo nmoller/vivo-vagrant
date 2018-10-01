@@ -8,7 +8,7 @@ set -e
 
 #Port KARMA runs on.  VIVO uses port 8080 so use alternate.
 KARMA_PORT="8000"
-KARMA_HOME="/home/vagrant/karma"
+KARMA_HOME="/opt/vivo/karma"
 
 # Karma source settings.  Shouldn't have to change.
 KARMA_URL="https://github.com/InformationIntegrationGroup/Web-Karma/archive/master.zip"
@@ -42,7 +42,7 @@ then
   cd $PWD
 
   #change owner of karma directory to vagrant
-  chown -R vagrant:vagrant $KARMA_HOME
+  chown -R tomcat7:tomcat7 $KARMA_HOME
 
 elif [ "$1" = "start" ]
 then
